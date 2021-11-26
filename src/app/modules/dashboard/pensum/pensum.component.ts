@@ -1,8 +1,7 @@
-import {Component, HostBinding, OnInit} from '@angular/core';
 import {PensumService} from 'app/networking/services/pensum.service';
 import {Materia, Pensum, PensumModel} from 'app/common';
-import {FormControl} from '@angular/forms';
-import {OverlayContainer} from '@angular/cdk/overlay';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-pensum',
@@ -12,34 +11,24 @@ import {OverlayContainer} from '@angular/cdk/overlay';
 export class PensumComponent implements OnInit {
 
   public pensum: Pensum;
-  public maxRows: number;
-  public maxColumns: number;
   public list: Array<Materia>;
-  public columns: Array<string>;
 
   constructor(
     private pensumService: PensumService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.list = [];
     this.pensum = new PensumModel();
-    this.columns = [];
-    this.maxRows = 5;
-    this.maxColumns = 10
-    this.generate();
-    this.retrieve();
+    this.activatedRoute.params.subscribe(params => {
+      this.retrieve(params['carnet'] ?? '');
+    })
   }
 
   ngOnInit(): void {
   }
 
-  public generate(): void {
-    for (let i = 0; i < this.maxColumns; i++) {
-      this.columns.push(' ');
-    }
-  }
-
-  public retrieve(): void {
-    this.pensumService.retrieve().subscribe({
+  public retrieve(carnet: string): void {
+    this.pensumService.retrieve(carnet).subscribe({
       next: response => {
           this.pensum = response.body
           this.list = this.pensum.pensum

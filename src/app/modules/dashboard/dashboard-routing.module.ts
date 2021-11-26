@@ -4,7 +4,7 @@ import {PensumComponent} from './pensum/pensum.component';
 
 const routes: Routes = [
   {
-    path: 'pensum',
+    path: 'pensum/:carnet',
     component: PensumComponent
   }
 ];
