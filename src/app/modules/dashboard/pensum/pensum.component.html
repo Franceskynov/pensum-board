@@ -1,0 +1,21 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-sm-12 col-md-12 col-xl-auto" *ngFor="let p of pensum.pensum; let i = index">
+      <div class="row" *ngFor="let materia of p.materias; let j = index">
+        <ng-container [ngTemplateOutlet]="cardTemplate" [ngTemplateOutletContext]="{materia:materia, i:i, j:j}">
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #cardTemplate let-materia="materia" let-i="i" let-j="j">
+  <mat-card class="score-pensum">
+    <mat-card-title>{{ materiaIndex(i, j) }} {{materia.mai_codmat}}</mat-card-title>
+    <mat-divider inset></mat-divider>
+    <mat-card-content [matTooltip]="materia.matnom">
+      <p class="text-content">{{materia.matnom | truncate : 12 }}</p>
+      <p class="text-content">Nota final {{materia.nf}}</p>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
